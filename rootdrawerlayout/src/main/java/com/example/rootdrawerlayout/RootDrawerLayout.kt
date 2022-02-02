@@ -1,6 +1,5 @@
 package com.example.rootdrawerlayout
 
-import androidx.annotation.FloatRange
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.updateTransition
@@ -16,8 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.example.rootdrawerlayout.RootDrawerLayoutState.Companion.RootDrawerSaver
 import kotlin.math.roundToInt
 
@@ -25,24 +22,45 @@ import kotlin.math.roundToInt
 fun RootDrawerLayout(
     modifier: Modifier = Modifier,
     rootDrawerLayoutState: RootDrawerLayoutState = rememberRootDrawerState(),
-    @FloatRange(from = 0.0, to = 1.0) drawerMinScale: Float = 0f,
-    @FloatRange(from = 0.0, to = 1.0) drawerMaxScale: Float = 1f,
-    @FloatRange(from = 0.0, to = 1.0) contentMinScale: Float = 0.75f,
-    @FloatRange(from = 0.0, to = 1.0) contentMaxScale: Float = 1f,
-    minContentCornerRadius: Dp = 0.dp,
-    maxContentCornerRadius: Dp = 8.dp,
-    minContentElevation: Dp = 0.dp,
-    maxContentElevation: Dp = 4.dp,
+    drawerProperties: RootDrawerLayoutProperties = RootDrawerLayoutProperties(),
+    contentProperties: RootDrawerContentProperties = RootDrawerContentProperties(),
     drawerContent: @Composable ColumnScope.() -> Unit,
     content: @Composable () -> Unit
 ) {
 
-    val expandTransition = updateTransition(targetState = rootDrawerLayoutState.rootDrawerLayoutValue, label = "expand_transition")
+    val expandTransition = updateTransition(
+        targetState = rootDrawerLayoutState.rootDrawerLayoutValue,
+        label = "expand_transition"
+    )
 
-    val contentScale by expandTransition.animateFloat(label = "content_scale") { layoutValue -> if (layoutValue.isExpanded) contentMinScale else contentMaxScale }
-    val drawerScale by expandTransition.animateFloat(label = "drawer_scale") { layoutValue -> if (layoutValue.isExpanded) drawerMaxScale else drawerMinScale }
-    val contentCornerRadius by expandTransition.animateDp(label = "content_corner_radius") { layoutValue -> if (layoutValue.isExpanded) maxContentCornerRadius else minContentCornerRadius }
-    val contentElevation by expandTransition.animateDp(label = "content_elevation") { layoutValue -> if (layoutValue.isExpanded) maxContentElevation else minContentElevation }
+    val contentScale by expandTransition.animateFloat(label = "content_scale") { layoutValue ->
+        if (layoutValue.isExpanded) {
+            drawerProperties.contentMinScale
+        } else {
+            drawerProperties.contentMaxScale
+        }
+    }
+    val drawerScale by expandTransition.animateFloat(label = "drawer_scale") { layoutValue ->
+        if (layoutValue.isExpanded) {
+            drawerProperties.drawerMaxScale
+        } else {
+            drawerProperties.drawerMinScale
+        }
+    }
+    val contentCornerRadius by expandTransition.animateDp(label = "content_corner_radius") { layoutValue ->
+        if (layoutValue.isExpanded) {
+            contentProperties.maxContentCornerRadius
+        } else {
+            contentProperties.minContentCornerRadius
+        }
+    }
+    val contentElevation by expandTransition.animateDp(label = "content_elevation") { layoutValue ->
+        if (layoutValue.isExpanded) {
+            contentProperties.maxContentElevation
+        } else {
+            contentProperties.minContentElevation
+        }
+    }
 
     Layout(
         modifier = modifier,
@@ -81,7 +99,10 @@ fun RootDrawerLayout(
             val contentTop = (height - contentPlaceable.height) / 2f
 
             drawerPlaceable.placeRelative(x = 0, y = 0)
-            contentPlaceable.placeRelative(x = drawerWidth.roundToInt(), y = contentTop.roundToInt())
+            contentPlaceable.placeRelative(
+                x = drawerWidth.roundToInt(),
+                y = contentTop.roundToInt()
+            )
         }
     }
 }
