@@ -15,7 +15,7 @@ allprojects {
 ```
 Next, add the dependency below to your **module**'s `build.gradle` file.
 ```Gradle
-	dependencies {
-	        implementation 'com.github.sertacokan:ComposeRootDrawerLayout:v1.0'
-	}
+dependencies {
+    implementation 'com.github.sertacokan:ComposeRootDrawerLayout:v1.0'
+}
 ```
