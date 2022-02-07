@@ -2,6 +2,10 @@
 
 [![](https://jitpack.io/v/sertacokan/ComposeRootDrawerLayout.svg)](https://jitpack.io/#sertacokan/ComposeRootDrawerLayout)
 
+## Demo
+
+![](https://github.com/sertacokan/ComposeRootDrawerLayout/blob/main/demo_drawer_animation.gif)
+
 ## Download
 
 ### Gradle
