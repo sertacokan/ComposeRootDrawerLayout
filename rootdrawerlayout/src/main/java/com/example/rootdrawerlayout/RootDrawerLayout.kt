@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -96,9 +96,10 @@ fun RootDrawerLayout(
 
         layout(width, height) {
             val drawerWidth = drawerPlaceable.width * drawerScale
+            val drawerTop = (height - drawerPlaceable.height) / 2f
             val contentTop = (height - contentPlaceable.height) / 2f
 
-            drawerPlaceable.placeRelative(x = 0, y = 0)
+            drawerPlaceable.placeRelative(x = 0, y = drawerTop.roundToInt())
             contentPlaceable.placeRelative(
                 x = drawerWidth.roundToInt(),
                 y = contentTop.roundToInt()
